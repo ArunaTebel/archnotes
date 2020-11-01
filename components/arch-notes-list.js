@@ -162,6 +162,7 @@ class ArchNotesList extends React.Component {
             } else {
                 await ArchNotesService.moveNoteOfUserToDirectory(ArchAuth.getCurrentUser().uid, draggedItem.key, parentId);
             }
+            ArchMessage.success(`Successfully moved '${draggedItem.title}' to ${parentItem.title && parentId ? `'${parentItem.title}'` : 'top'}`);
         }
         this.props.onNoteListChange();
     }
