@@ -5,7 +5,7 @@
 }
 
 body {
-    min-width: 300px;
+    min-width: 500px;
 }
 
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-item, .ant-menu-dark.ant-menu-horizontal > .ant-menu-submenu {
