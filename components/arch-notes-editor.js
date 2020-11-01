@@ -1,6 +1,6 @@
 import React from 'react'
 import {CKEditor} from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import ClassicEditor from 'ckeditor5-build-archeun/build/ckeditor';
 
 
 class ArchNotesEditor extends React.Component {
@@ -11,12 +11,58 @@ class ArchNotesEditor extends React.Component {
             <CKEditor
                 editor={ClassicEditor}
                 data={this.props.content ? this.props.content : ''}
+                config={{
+                    language: 'en',
+                    image: {
+                        toolbar: [
+                            'imageTextAlternative',
+                            'imageStyle:full',
+                            'imageStyle:side'
+                        ]
+                    },
+                    table: {
+                        contentToolbar: [
+                            'tableColumn',
+                            'tableRow',
+                            'mergeTableCells'
+                        ]
+                    },
+                    toolbar: [
+                        'heading',
+                        '|',
+                        'bold',
+                        'italic',
+                        'link',
+                        'bulletedList',
+                        'numberedList',
+                        '|',
+                        'indent',
+                        'outdent',
+                        '|',
+                        'imageUpload',
+                        'blockQuote',
+                        'insertTable',
+                        'undo',
+                        'redo',
+                        'alignment',
+                        'code',
+                        'codeBlock',
+                        'fontBackgroundColor',
+                        'fontColor',
+                        'fontSize',
+                        'fontFamily',
+                        'highlight',
+                        'horizontalLine',
+                        'imageInsert',
+                        'pageBreak',
+                        'removeFormat'
+                    ]
+                }}
                 onReady={editor => {
-                    // You can store the "editor" and use when it is needed.
-                    // console.log('Editor is ready to use!', editor);
+
                 }}
                 onChange={(event, editor) => {
-                    const data = editor.getData();
+
                 }}
                 onBlur={(event, editor) => {
                     this.props.onEditorBlur(editor.getData());
