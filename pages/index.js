@@ -1,11 +1,12 @@
 import React from 'react'
-import {Layout, Row, Col, Button} from 'antd';
+import {Layout, Row, Col, Button, Spin} from 'antd';
 import classnames from 'classnames';
 import styles from '../styles/Home.module.css'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import ArchAuth from "../util/arch-auth";
 import ArchNotesService from "../util/arch-notes-service";
+import ArchMessage from "../util/arch-message";
 
 const {Content} = Layout;
 const ArchNotesEditor = dynamic(() => import('../components/arch-notes-editor'), {ssr: false});
@@ -13,11 +14,19 @@ const ArchNotesList = dynamic(() => import('../components/arch-notes-list'), {ss
 
 class Home extends React.Component {
 
-    state = {loading: {notesList: true}, loggedInUser: null, notesAndDirectories: []};
+    state = {
+        loading: {notesList: true},
+        loggedInUser: null,
+        notesAndDirectories: [],
+        selectedNote: null,
+        editorContentSaveInterval: null,
+        showContentSaveLoader: false
+    };
 
     constructor(props) {
         super(props);
         this.initNotesAndDirList = this.initNotesAndDirList.bind(this);
+        this.saveEditorContent = this.saveEditorContent.bind(this);
     }
 
     componentDidMount() {
@@ -30,6 +39,14 @@ class Home extends React.Component {
                 this.setState({loading: {notesList: false}});
             }
         });
+    }
+
+    async saveEditorContent(editorContent) {
+        if (this.state.selectedNote) {
+            this.setState({showContentSaveLoader: true});
+            await ArchNotesService.updateNoteContent(ArchAuth.getCurrentUser().uid, this.state.selectedNote.id, editorContent);
+            this.setState({showContentSaveLoader: false});
+        }
     }
 
     async initNotesAndDirList() {
@@ -51,6 +68,7 @@ class Home extends React.Component {
                     <title>archeun | NOTES</title>
                 </Head>
                 <Layout className={styles.mainLayout}>
+                    {this.state.showContentSaveLoader ? <div id='arch-note-content-saving-loader'><Spin size='small'/> <span>Saving ...</span></div> : ''}
                     <Row className={styles.header}>
                         <Col span={18}>
                             <div className={styles.brandNameText}>archeun | NOTES</div>
@@ -71,10 +89,14 @@ class Home extends React.Component {
                                                onNoteListChange={() => {
                                                    return this.initNotesAndDirList().then();
                                                }}
+                                               onSelectNote={(note) => {
+                                                   this.setState({selectedNote: note})
+                                               }}
                                                loading={this.state.loading.notesList}/>
                             </Col>
                             <Col className={classnames(styles.contentRowRightCol)} span={18}>
-                                <ArchNotesEditor/>
+                                <ArchNotesEditor content={this.state.selectedNote ? this.state.selectedNote.content : ''}
+                                                 onEditorBlur={this.saveEditorContent}/>
                             </Col>
                         </Row>
                     </Content>

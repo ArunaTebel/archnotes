@@ -55,8 +55,13 @@ const ArchNotesService = {
     },
 
     fetchDirectoryById: async (loggedInUserId, id) => {
-        authorize(loggedInUserId, 'fetchDirectories', 'Fetch Directory by Id');
+        authorize(loggedInUserId, 'fetchDirectoryById', 'Fetch Directory by Id');
         return await ArchNotesDataStore.fetchDirectoryByIdForUser(loggedInUserId, id);
+    },
+
+    fetchNoteById: async (loggedInUserId, id) => {
+        authorize(loggedInUserId, 'fetchNoteById', 'Fetch Note by Id');
+        return await ArchNotesDataStore.fetchNoteByIdForUser(loggedInUserId, id);
     },
 
     createDirectory: async (loggedInUserId, name, parentId) => {
@@ -124,6 +129,11 @@ const ArchNotesService = {
     renameNote: async (loggedInUserId, noteId, newName) => {
         authorize(loggedInUserId, 'renameNote', 'Rename Note');
         return await ArchNotesDataStore.renameNoteForUser(loggedInUserId, noteId, newName);
+    },
+
+    updateNoteContent: async (loggedInUserId, noteId, newContent) => {
+        authorize(loggedInUserId, 'updateNoteContent', 'Update Note Content');
+        return await ArchNotesDataStore.updateNoteContentForUser(loggedInUserId, noteId, newContent);
     },
 
     deleteNote: async (loggedInUserId, noteId) => {

@@ -70,6 +70,7 @@ class ArchNotesList extends React.Component {
 
     state = {
         selectedItem: null,
+        selectedNote: null,
         modalProps: {
             addEditModal: ModalUtil.addEditModal.props
         }
@@ -123,9 +124,15 @@ class ArchNotesList extends React.Component {
         }
     }
 
-    onSelect(itemUid, event) {
+    async onSelect(itemUid, event) {
         if (event.selected) {
-            this.setState({selectedItem: {type: event.node.type, uid: itemUid[0], name: event.node.title}});
+            const newState = {selectedItem: {type: event.node.type, uid: itemUid[0], name: event.node.title}};
+            if (event.node.type === ArchNotesService.ITEM_TYPE_NOTE) {
+                const selectedNote = await ArchNotesService.fetchNoteById(ArchAuth.getCurrentUser().uid, itemUid[0]);
+                newState['selectedNote'] = selectedNote.data();
+                this.props.onSelectNote({...selectedNote.data(), 'id': selectedNote.id});
+            }
+            this.setState(newState);
         } else {
             this.setState({selectedItem: null})
         }

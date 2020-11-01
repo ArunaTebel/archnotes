@@ -19,6 +19,10 @@ const ArchNotesDataStore = {
         return await getDb().collection(`notes/${userUid}/directories`).doc(directoryId).get().then();
     },
 
+    fetchNoteByIdForUser: async (userUid, noteId) => {
+        return await getDb().collection(`notes/${userUid}/notes`).doc(noteId).get().then();
+    },
+
     fetchNotesForUser: async (userUid) => {
         let noteList = [];
         const notes = await getDb().collection(`notes/${userUid}/notes`).get().then();
@@ -57,6 +61,10 @@ const ArchNotesDataStore = {
 
     renameNoteForUser: async (userUid, noteId, newName) => {
         return await getDb().collection(`notes/${userUid}/notes`).doc(noteId).update({title: newName}).then();
+    },
+
+    updateNoteContentForUser: async (userUid, noteId, newContent) => {
+        return await getDb().collection(`notes/${userUid}/notes`).doc(noteId).update({content: newContent}).then();
     },
 
     deleteNoteForUser: async (userUid, noteId) => {

@@ -12,3 +12,15 @@
 .arch-noteslist-placeholder-card > div.ant-card-body {
     display: none;
 }
+
+#arch-note-content-saving-loader {
+    position: absolute;
+    top: 13%;
+    left: 88%;
+    z-index: 1;
+}
+
+#arch-note-content-saving-loader > span {
+    margin-top: -5px;
+    margin-left: 6px;
+}
