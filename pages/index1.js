@@ -62,12 +62,7 @@ class Home extends React.Component {
     }
 
     render() {
-        const loggedInUser = this.state.loggedInUser;
-        const editorContent = this.state.selectedNote ? this.state.selectedNote.content : '';
-        const welcomeText = loggedInUser ? `Welcome, ${loggedInUser.displayName}` : '';
-        const signInOutButton = loggedInUser ? <Button size={'small'} onClick={ArchAuth.signOut}>{loggedInUser ? 'Logout' : ''}</Button> :
-            <div id="g-signin2"/>;
-        const savingLoader = this.state.showContentSaveLoader ? <><Spin size='small'/> <span>Saving ...</span></> : '';
+        let loggedInUser = this.state.loggedInUser;
         return (
             <>
                 <Head>
@@ -77,29 +72,44 @@ class Home extends React.Component {
                     <meta name="google-signin-scope" content="profile email"/>
                     <title>archeun | NOTES</title>
                 </Head>
-                <Layout className={styles.level1Layout}>
-                    <div className={styles.savingLoader}>{savingLoader}</div>
-                    <Header className={styles.header}>
-                        <div className={styles.logo}>archeun | NOTES</div>
-                        <Menu className={styles.rightMenuItems} theme="dark" mode="horizontal">
-                            <Menu.Item key="username">{welcomeText}</Menu.Item>
-                            <Menu.Item key="sign-in-out-buttons">{signInOutButton}</Menu.Item>
+                <Layout>
+                    <Header className="header">
+                        <div className="logo" style={{
+                            height: '52px',
+                            color: 'white',
+                            float: 'left'
+                        }}>archeun | NOTES
+                        </div>
+                        <Menu style={{float: 'right'}} theme="dark" mode="horizontal">
+                            <Menu.Item key="1">
+                                <div>{loggedInUser ? `Welcome, ${loggedInUser.displayName}` : ''}</div>
+                            </Menu.Item>
+                            <Menu.Item key="2">
+                                {loggedInUser ? '' : <div id="g-signin2" data-theme="dark"/>}
+                                <Button onClick={ArchAuth.signOut}>
+                                    {loggedInUser ? 'Logout' : ''}
+                                </Button>
+                            </Menu.Item>
                         </Menu>
                     </Header>
-                    <Layout className={styles.level2Layout}>
-                        <Sider className={styles.sider} breakpoint="lg" collapsedWidth="0" theme='light' width={280}>
+                    <Layout>
+                        <Sider style={{height: '100%',}} breakpoint="lg" collapsedWidth="0" theme='light'>
                             <ArchNotesList loggedInUser={this.state.loggedInUser}
                                            notesAndDirectories={this.state.notesAndDirectories}
-                                           onNoteListChange={this.initNotesAndDirList}
+                                           onNoteListChange={() => {
+                                               return this.initNotesAndDirList().then();
+                                           }}
                                            onSelectNote={(note) => {
                                                this.setState({selectedNote: note})
                                            }}
                                            loading={this.state.loading.notesList}/>
                         </Sider>
-                        <Layout className={styles.level3Layout}>
-                            <Content className={styles.editorContent}><ArchNotesEditor content={editorContent}
-                                                                                       onEditorBlur={this.saveEditorContent}/></Content>
-                            <div className={styles.footer}>ArCheun ©2020 Created by Aruna Tebel</div>
+                        <Layout>
+                            <Content>
+                                <ArchNotesEditor content={this.state.selectedNote ? this.state.selectedNote.content : ''}
+                                                 onEditorBlur={this.saveEditorContent}/>
+                            </Content>
+                            <Footer style={{textAlign: 'center'}}>Ant Design ©2018 Created by Ant UED</Footer>
                         </Layout>
                     </Layout>
                 </Layout>

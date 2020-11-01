@@ -1,26 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;700&display=swap');
 
 * {
-    font-family: 'Quicksand', sans-serif;
+    font-family: 'Assistant', sans-serif;
+}
+
+.ant-menu-dark.ant-menu-horizontal > .ant-menu-item, .ant-menu-dark.ant-menu-horizontal > .ant-menu-submenu {
+    top: -12px;
+}
+
+.ant-menu.ant-menu-dark .ant-menu-item-selected, .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected {
+    background-color: unset;
+}
+
+.ant-menu-dark.ant-menu-horizontal > .ant-menu-item:hover {
+    background-color: unset;
 }
 
 .ck-editor__editable_inline {
-    min-height: 470px;
-    max-height: 470px;
+    min-height: 500px;
+    max-height: 500px;
+}
+
+#g-signin2 > div {
+    top: -14px;
 }
 
 .arch-noteslist-placeholder-card > div.ant-card-body {
     display: none;
-}
-
-#arch-note-content-saving-loader {
-    position: absolute;
-    top: 13%;
-    left: 88%;
-    z-index: 1;
-}
-
-#arch-note-content-saving-loader > span {
-    margin-top: -5px;
-    margin-left: 6px;
 }

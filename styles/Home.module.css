@@ -1,59 +1,61 @@
-.mainLayout {
-    padding: 0;
-    margin: 0;
-}
-
 .header {
-    margin: 0;
-    padding: 5px 25px;
-    height: 50px;
-    background-color: crimson;
+    height: 40px;
 }
 
-.brandNameText {
+.level1Layout {
+    background-color: white;
+}
+
+.level2Layout {
+    height: 570px;
+    background-color: white;
+    margin: 10px;
+}
+
+.level3Layout {
+    background-color: white;
+    height: 570px;
+}
+
+.logo {
+    height: 52px;
     color: white;
+    float: left;
     font-weight: bold;
-    font-size: 1.5em;
+    font-size: 1.3em;
+    margin-top: -12px;
 }
 
-.content {
-    min-height: 500px;
-    padding: 20px;
+.rightMenuItems {
+    float: right;
+    height: 40px;
+}
+
+.sider {
+    height: 100%;
+    margin-right: 10px;
+}
+
+.editorContent {
+    background-color: white;
 }
 
 .footer {
     text-align: center;
-    padding-bottom: 15px;
+    width: 99%;
+    font-size: 0.9em;
+    background-color: white;
 }
 
-.footerText {
-    /*margin-top: -30px;*/
+.savingLoader {
+    position: absolute;
+    top: 9.5%;
+    left: 92%;
+    z-index: 1;
 }
 
-.bordered {
-    border: 1px solid #ccc;
+.savingLoader > span {
+    margin-top: -5px;
+    margin-left: 6px;
 }
 
-.contentRow {
-    min-height: 460px;
-}
-
-.contentRowLeftCol {
-    margin-right: 15px;
-}
-
-.contentRowRightCol {
-    min-height: 300px;
-}
-
-.signInOut {
-    float: right;
-    margin-top: 3px;
-}
-
-.loggedInUserName {
-    color: white;
-    float: right;
-    margin-top: 8px;
-    margin-right: 10px;
-}
