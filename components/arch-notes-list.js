@@ -52,6 +52,7 @@ const ModalUtil = {
                 const newName = values.name;
                 await ArchNotesService[funcName](ArchAuth.getCurrentUser().uid, selectedItem.uid, newName);
                 archNotesListComponent.closeAddEditModal();
+                archNotesListComponent.setState({selectedItem: null});
                 return archNotesListComponent.props.onNoteListChange();
             }
             return false;
@@ -98,7 +99,7 @@ class ArchNotesList extends React.Component {
             this.openAddEditModal({
                 visible: true,
                 title: `Create ${isAddDir ? 'Directory' : 'Note'}`,
-                modalText: `Create a ${isAddDir ? 'directory' : 'note'} under '${selectedItem ? selectedItem.name : ''}'`,
+                modalText: `Create a ${isAddDir ? 'directory' : 'note'} ${selectedItem && selectedItem.type === ArchNotesService.ITEM_TYPE_DIRECTORY ? `under '${selectedItem.name}'` : ''}`,
                 onFormSubmitSuccess: isAddDir ? ModalUtil.modalFormActionHandlers.createDirectory : ModalUtil.modalFormActionHandlers.createNote,
                 onFormSubmitError: ModalUtil.modalFormActionHandlers.onError,
             });
@@ -194,11 +195,13 @@ class ArchNotesList extends React.Component {
                         draggable
                         blockNode
                         onDrop={this.onDragAndDropItem}
-                        showLine
+                        showLine={{showLeafIcon: false}}
+                        showIcon
                         switcherIcon={<DownOutlined/>}
-                        defaultExpandedKeys={['0-0-0']}
+                        defaultExpandAll
                         onSelect={this.onSelect}
                         treeData={this.props.notesAndDirectories}
+                        selectedKeys={this.state.selectedItem ? [this.state.selectedItem.uid] : []}
                     />
                     {this.props.loggedInUser ? '' : <Result icon={<SmileOutlined/>} title="Sign in to start creating notes"/>}
                 </Card>

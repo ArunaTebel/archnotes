@@ -1,7 +1,12 @@
 import ArchNotesDataStore from "./arch-notes-data-store";
 import ArchAuth from "./arch-auth";
 import ArchNotesUnauthorizedException from "./arch-exception";
+import {
+    FolderOutlined,
+    FileTextOutlined,
+} from '@ant-design/icons';
 
+import React from "react";
 
 const createDirectoryTree = directories => {
     let hashTable = Object.create(null)
@@ -29,10 +34,10 @@ const ArchNotesService = {
         let notes = await ArchNotesService.fetchNotes(loggedInUserId);
         let directories = await ArchNotesService.fetchDirectories(loggedInUserId);
         notes = notes.map((note) => {
-            return {...note, "type": ArchNotesService.ITEM_TYPE_NOTE}
+            return {...note, "type": ArchNotesService.ITEM_TYPE_NOTE, icon: <FileTextOutlined/>}
         });
         directories = directories.map((directory) => {
-            return {...directory, "type": ArchNotesService.ITEM_TYPE_DIRECTORY}
+            return {...directory, "type": ArchNotesService.ITEM_TYPE_DIRECTORY, icon: <FolderOutlined/>}
         });
         return createDirectoryTree(
             notes.concat(directories)
