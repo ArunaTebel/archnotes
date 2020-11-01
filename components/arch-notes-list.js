@@ -6,6 +6,7 @@ import styles from "../styles/ArchNotesList.module.css";
 import ArchNotesService from "../util/arch-notes-service";
 import ArchAuth from "../util/arch-auth";
 import ArchFormModal from "./util/arch-form-modal";
+import ArchMessage from "../util/arch-message";
 
 const ModalUtil = {
     addEditModal: {
@@ -42,6 +43,7 @@ const ModalUtil = {
             const createdItem = await ArchNotesService[funcName](ArchAuth.getCurrentUser().uid, name, parentDirId);
             if (createdItem.id) {
                 archNotesListComponent.closeAddEditModal();
+                ArchMessage.success(`Successfully created '${name}'`);
                 return archNotesListComponent.props.onNoteListChange();
             }
             return false;
@@ -52,13 +54,14 @@ const ModalUtil = {
                 const newName = values.name;
                 await ArchNotesService[funcName](ArchAuth.getCurrentUser().uid, selectedItem.uid, newName);
                 archNotesListComponent.closeAddEditModal();
+                ArchMessage.success(`Successfully renamed '${selectedItem.name}' to '${newName}'`);
                 archNotesListComponent.setState({selectedItem: null});
                 return archNotesListComponent.props.onNoteListChange();
             }
             return false;
         },
         onError: (archNotesListComponent, errors) => {
-            console.log(errors);
+            ArchMessage.error('Error occurred');
         }
     }
 }
@@ -114,6 +117,8 @@ class ArchNotesList extends React.Component {
                     onFormSubmitSuccess: isDirectory ? ModalUtil.modalFormActionHandlers.renameDirectory : ModalUtil.modalFormActionHandlers.renameNote,
                     onFormSubmitError: ModalUtil.modalFormActionHandlers.onError,
                 });
+            } else {
+                ArchMessage.info('No item selected');
             }
         }
     }
@@ -136,8 +141,11 @@ class ArchNotesList extends React.Component {
                 funcName = 'deleteNote';
             }
             await ArchNotesService[funcName](ArchAuth.getCurrentUser().uid, selectedItem.uid);
-            this.setState({selectedItem: null})
+            ArchMessage.success(`Successfully deleted '${selectedItem.name}'`);
+            this.setState({selectedItem: null});
             return this.props.onNoteListChange();
+        } else {
+            ArchMessage.info('No item selected');
         }
     }
 
@@ -189,6 +197,7 @@ class ArchNotesList extends React.Component {
         const addEditModalProps = this.state.modalProps.addEditModal;
         return (
             <div>
+                {/*<ArchMessage message={'aaaaaahhhhh'}/>*/}
                 <Card className='arch-noteslist-placeholder-card' actions={actionItems}/>
                 <Card size='small' className={classnames(styles.notesListCard)} loading={this.props.loading}>
                     <Tree
