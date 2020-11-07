@@ -7,6 +7,7 @@ import {
 } from '@ant-design/icons';
 
 import React from "react";
+import firebase from "firebase";
 
 const createDirectoryTree = directories => {
     let hashTable = Object.create(null)
@@ -163,6 +164,12 @@ const ArchNotesService = {
             }
         }
         return await ArchNotesDataStore.updateNoteOfUser(loggedInUserId, noteId, {'directory_id': dirReference});
+    },
+
+    sendNoteToEmail: async (loggedInUserId, emailAddress, note) => {
+        const sendMail = firebase.functions().httpsCallable('sendMail');
+        const functionData = {to: emailAddress, note: {title: note.title, content: note.content}, sender: {name: ArchAuth.getCurrentUser().displayName}};
+        return await sendMail(functionData);
     }
 }
 

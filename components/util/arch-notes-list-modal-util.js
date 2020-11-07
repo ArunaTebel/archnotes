@@ -17,6 +17,20 @@ const ModalUtil = {
             },
         }
     },
+    sendNoteViaEmailModal: {
+        props: {
+            visible: false,
+            id: 'sent_note_via_email_modal',
+            title: 'Send Note via Email',
+            name: 'sent_note_via_email_modal',
+            modalText: 'Type the email address of the recipient you want to send the note',
+            initialValues: {},
+            onFormSubmitSuccess: () => {
+            },
+            onFormSubmitError: () => {
+            },
+        }
+    },
     modalFormActionHandlers: {
         createDirectory: async (archNotesListComponent, values) => {
             return ModalUtil.modalFormActionHandlers.createItem(archNotesListComponent, values, 'createDirectory');
@@ -36,7 +50,7 @@ const ModalUtil = {
             const parentDirId = selectedItem ? selectedItem.uid : null;
             const createdItem = await ArchNotesService[funcName](ArchAuth.getCurrentUser().uid, name, parentDirId);
             if (createdItem.id) {
-                archNotesListComponent.closeAddEditModal();
+                archNotesListComponent.closeModal('addEditModal');
                 ArchMessage.success(`Successfully created '${name}'`);
                 return archNotesListComponent.props.onNoteListChange();
             }
@@ -47,13 +61,25 @@ const ModalUtil = {
             if (selectedItem && selectedItem.uid) {
                 const newName = values.name;
                 await ArchNotesService[funcName](ArchAuth.getCurrentUser().uid, selectedItem.uid, newName);
-                archNotesListComponent.closeAddEditModal();
+                archNotesListComponent.closeModal('addEditModal');
                 ArchMessage.success(`Successfully renamed '${selectedItem.name}' to '${newName}'`);
                 archNotesListComponent.setState({selectedItem: null});
                 return archNotesListComponent.props.onNoteListChange();
             }
             return false;
         },
+
+        sendNoteViaEmail: async (archNotesListComponent, values) => {
+            const selectedNote = archNotesListComponent.state.selectedNote;
+            const result = await ArchNotesService.sendNoteToEmail(ArchAuth.getCurrentUser().uid, values.email, selectedNote);
+            if (result && result.data && result.data.messageId) {
+                ArchMessage.success(`Successfully sent the '${selectedNote.title}' to '${values.email}'`);
+                archNotesListComponent.closeModal('sendNoteViaEmailModal');
+                return true;
+            }
+            return false;
+        },
+
         onError: (archNotesListComponent, errors) => {
             ArchMessage.error('Error occurred');
         }

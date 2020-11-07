@@ -14,6 +14,7 @@
     "ckeditor5-build-archeun": "https://github.com/ArCheun/arch-react-wysiwyg",
     "classnames": "^2.2.6",
     "firebase": "^8.0.0",
+    "loadash": "^1.0.0",
     "next": "10.0.0",
     "react": "17.0.1",
     "react-dom": "17.0.1"

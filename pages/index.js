@@ -86,7 +86,7 @@ class Home extends React.Component {
                     </Header>
                     <Layout className={styles.level2Layout}>
                         <Sider zeroWidthTriggerStyle={{top: '-50px'}}
-                            className={styles.sider} breakpoint="lg" collapsedWidth="0" theme='light' width={280}>
+                               className={styles.sider} breakpoint="lg" collapsedWidth="0" theme='light' width={280}>
                             <ArchNotesList loggedInUser={this.state.loggedInUser}
                                            notesAndDirectories={this.state.notesAndDirectories}
                                            onNoteListChange={this.initNotesAndDirList}

@@ -15,8 +15,6 @@ function ArchFormModal(props) {
             await props.onOkValid(values);
             setModalState({confirmLoading: false});
         } catch (error) {
-            form.resetFields();
-            props.onOkInValid(error);
             setModalState({confirmLoading: false});
         }
     };
