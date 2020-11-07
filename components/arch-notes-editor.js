@@ -39,7 +39,7 @@ class ArchNotesEditor extends React.Component {
                         'indent',
                         'outdent',
                         '|',
-                        'imageUpload',
+                        // 'imageUpload',
                         'blockQuote',
                         'insertTable',
                         'undo',
@@ -53,7 +53,7 @@ class ArchNotesEditor extends React.Component {
                         'fontFamily',
                         'highlight',
                         'horizontalLine',
-                        'imageInsert',
+                        // 'imageInsert',
                         'pageBreak',
                         'removeFormat'
                     ]
