@@ -44,7 +44,9 @@ class Home extends React.Component {
         if (this.state.selectedNote) {
             this.setState({showContentSaveLoader: true});
             await ArchNotesService.updateNoteContent(ArchAuth.getCurrentUser().uid, this.state.selectedNote.id, editorContent);
-            this.setState({showContentSaveLoader: false});
+            this.setState((prevState) => {
+                return {...prevState, showContentSaveLoader: false, selectedNote: {...prevState.selectedNote, content: editorContent}};
+            });
         }
     }
 
@@ -58,6 +60,7 @@ class Home extends React.Component {
     render() {
         const loggedInUser = this.state.loggedInUser;
         const editorContent = this.state.selectedNote ? this.state.selectedNote.content : '';
+        const editorEnabled = !loggedInUser || (this.state.selectedNote && this.state.selectedNote.id);
         const welcomeText = loggedInUser ? `Welcome, ${loggedInUser.displayName}` : '';
         const signInOutButton = loggedInUser ? <Button size={'small'} onClick={ArchAuth.signOut}>{loggedInUser ? 'Logout' : ''}</Button> :
             <div id="g-signin2"/>;
@@ -96,8 +99,9 @@ class Home extends React.Component {
                                            loading={this.state.loading.notesList}/>
                         </Sider>
                         <Layout className={styles.level3Layout}>
-                            <Content className={styles.editorContent}><ArchNotesEditor content={editorContent}
-                                                                                       onEditorBlur={this.saveEditorContent}/></Content>
+                            <Content className={styles.editorContent}>
+                                <ArchNotesEditor content={editorContent} onEditorBlur={this.saveEditorContent} disabled={!editorEnabled}/>
+                            </Content>
                             <div className={styles.footer}>ArCheun ©2020 Created by Aruna Tebel</div>
                         </Layout>
                     </Layout>

@@ -11,6 +11,7 @@ class ArchNotesEditor extends React.Component {
             <CKEditor
                 editor={ClassicEditor}
                 data={this.props.content ? this.props.content : ''}
+                disabled={this.props.disabled}
                 config={{
                     language: 'en',
                     image: {

@@ -63,17 +63,19 @@ const ModalUtil = {
                 await ArchNotesService[funcName](ArchAuth.getCurrentUser().uid, selectedItem.uid, newName);
                 archNotesListComponent.closeModal('addEditModal');
                 ArchMessage.success(`Successfully renamed '${selectedItem.name}' to '${newName}'`);
-                archNotesListComponent.setState({selectedItem: null});
+                archNotesListComponent.setState((prevState, props) => ({
+                    selectedItem: {...prevState.selectedItem, name: newName}
+                }));
                 return archNotesListComponent.props.onNoteListChange();
             }
             return false;
         },
 
         sendNoteViaEmail: async (archNotesListComponent, values) => {
-            const selectedNote = archNotesListComponent.state.selectedNote;
-            const result = await ArchNotesService.sendNoteToEmail(ArchAuth.getCurrentUser().uid, values.email, selectedNote);
+            const selectedNote = await ArchNotesService.fetchNoteById(ArchAuth.getCurrentUser().uid, archNotesListComponent.state.selectedNote.id);
+            const result = await ArchNotesService.sendNoteToEmail(ArchAuth.getCurrentUser().uid, values.email, selectedNote.data());
             if (result && result.data && result.data.messageId) {
-                ArchMessage.success(`Successfully sent the '${selectedNote.title}' to '${values.email}'`);
+                ArchMessage.success(`Successfully sent the '${selectedNote.data().title}' to '${values.email}'`);
                 archNotesListComponent.closeModal('sendNoteViaEmailModal');
                 return true;
             }

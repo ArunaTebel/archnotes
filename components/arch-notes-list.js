@@ -93,7 +93,7 @@ class ArchNotesList extends React.Component {
             const newState = {selectedItem: {type: event.node.type, uid: itemUid[0], name: event.node.title}};
             if (event.node.type === ArchNotesService.ITEM_TYPE_NOTE) {
                 const selectedNote = await ArchNotesService.fetchNoteById(ArchAuth.getCurrentUser().uid, itemUid[0]);
-                newState['selectedNote'] = selectedNote.data();
+                newState['selectedNote'] = {...selectedNote.data(), 'id': selectedNote.id};
                 this.props.onSelectNote({...selectedNote.data(), 'id': selectedNote.id});
             }
             this.setState(newState);
