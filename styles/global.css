@@ -20,6 +20,11 @@ body {
     background-color: unset;
 }
 
+.ant-spin-dot-item{
+    background-color: crimson;
+    opacity: 100%;
+}
+
 .ck-editor__editable_inline {
     min-height: 500px;
     max-height: 500px;
