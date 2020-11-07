@@ -1,19 +1,13 @@
 import React from 'react'
-import {Layout, Row, Col, Button, Spin} from 'antd';
-import classnames from 'classnames';
+import {Layout, Button, Spin} from 'antd';
 import styles from '../styles/Home.module.css'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import ArchAuth from "../util/arch-auth";
 import ArchNotesService from "../util/arch-notes-service";
-import ArchMessage from "../util/arch-message";
+import {Menu} from 'antd';
 
-import {Menu, Breadcrumb} from 'antd';
-import {UserOutlined, LaptopOutlined, NotificationOutlined} from '@ant-design/icons';
-
-const {SubMenu} = Menu;
-const {Header, Content, Sider, Footer} = Layout;
-
+const {Header, Content, Sider,} = Layout;
 const ArchNotesEditor = dynamic(() => import('../components/arch-notes-editor'), {ssr: false});
 const ArchNotesList = dynamic(() => import('../components/arch-notes-list'), {ssr: false});
 
@@ -67,7 +61,7 @@ class Home extends React.Component {
         const welcomeText = loggedInUser ? `Welcome, ${loggedInUser.displayName}` : '';
         const signInOutButton = loggedInUser ? <Button size={'small'} onClick={ArchAuth.signOut}>{loggedInUser ? 'Logout' : ''}</Button> :
             <div id="g-signin2"/>;
-        const savingLoader = this.state.showContentSaveLoader ? <><Spin size='small'/> <span>Saving ...</span></> : '';
+        const savingLoader = this.state.showContentSaveLoader ? <Spin size='small'/> : '';
         return (
             <>
                 <Head>
@@ -78,11 +72,15 @@ class Home extends React.Component {
                     <title>archeun | NOTES</title>
                 </Head>
                 <Layout className={styles.level1Layout}>
-                    <div className={styles.savingLoader}>{savingLoader}</div>
                     <Header className={styles.header}>
-                        <div className={styles.logo}>archeun | NOTES</div>
+                        <Menu className={styles.leftMenuItems} theme="dark" mode="horizontal">
+                            <Menu.Item key="logo" className={styles.logo}>
+                                <div className={styles.logoTxt}>archeun | NOTES</div>
+                            </Menu.Item>
+                        </Menu>
                         <Menu className={styles.rightMenuItems} theme="dark" mode="horizontal">
-                            <Menu.Item key="username">{welcomeText}</Menu.Item>
+                            <Menu.Item key="save-loader" className={styles.savingLoader}>{savingLoader}</Menu.Item>
+                            <Menu.Item key="username" className={styles.welcomeText}>{welcomeText}</Menu.Item>
                             <Menu.Item key="sign-in-out-buttons">{signInOutButton}</Menu.Item>
                         </Menu>
                     </Header>

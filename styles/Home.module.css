@@ -26,9 +26,31 @@
     margin-top: -12px;
 }
 
+.logoTxt {
+    color: white;
+    font-weight: bold;
+}
+
 .rightMenuItems {
     float: right;
     height: 40px;
+}
+
+.welcomeText {
+    max-width: 220px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+
+.leftMenuItems {
+    float: left;
+    height: 40px;
+}
+
+@media only screen and (max-width: 610px) {
+    .leftMenuItems {
+        display: none;
+    }
 }
 
 .sider {
@@ -48,14 +70,6 @@
 }
 
 .savingLoader {
-    position: absolute;
-    top: 9.5%;
-    left: 92%;
-    z-index: 1;
-}
-
-.savingLoader > span {
-    margin-top: -5px;
-    margin-left: 6px;
+    margin-right: -25px;
 }
 
